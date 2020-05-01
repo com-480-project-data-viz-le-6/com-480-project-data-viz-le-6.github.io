@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+}
+
+.full_height{
+    height: 100%;
+}
+
+.headline{
+    height: 10%;
+}
+
+.first_row{
+    height: 40%;
+}
+
+.second_row{
+    height: 40%;
+}
+
+#athtlete_img{
+    height: 64px;
+    width: 64px;
+}
