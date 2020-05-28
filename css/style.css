@@ -1,5 +1,7 @@
 html, body {
     height: 100%;
+    font-family: Open Sans, sans-serif;
+    background-color: #eeeeff;
 }
 
 .full_height{
@@ -15,14 +17,24 @@ html, body {
 }
 
 .second_row{
-    height: 40%;
+    height: 37%;
 }
 
 .timeline_row{
     height: 5%;
 }
 
-#athtlete_img{
-    height: 64px;
-    width: 64px;
+.navdown_row{
+    height: 3%;
+}
+#back{
+    text-align: center;
+}
+
+#go{
+    text-align: center;
+}
+
+#exlanations{
+    background-color: white;
 }

@@ -1,0 +1,24 @@
+.ath_name {
+  font-weight: bold;
+}
+
+.ath_details p {
+  margin: 0;
+}
+
+.stats-graph {
+  text-align: center;
+}
+
+.ath_profile{
+  width:100%;
+}
+
+#ath_photo{
+  max-width: 102px;
+  max-height: 102px;
+}
+
+#select-profile-chart{
+  margin-bottom: 15px;
+}

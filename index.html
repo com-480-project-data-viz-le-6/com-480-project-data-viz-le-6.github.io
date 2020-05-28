@@ -5,31 +5,97 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/graph.css">
     <link rel="stylesheet" href="./css/map.css">
     <link rel="stylesheet" href="./css/ranking.css">
-
-    <title>Evolution dashboard</title>
+    <link rel="stylesheet" href="./css/race.css">
+    <link rel="stylesheet" href="./css/auto-complete.css">
+    <link rel="stylesheet" href="./css/profile.css">
+    <title>Tout Schuss</title>
 </head>
 
 <body>
     <div class="container-fluid full_height">
         <div class="headline row my-3">
             <div class="mx-auto">
-                <h1>Alpine skiing - evolution dashboard</h1>
+                <span id="dashboard"></span>
+                <h1>Tout Schuss</h1>
             </div>
         </div>
         <div class="first_row row my-2">
             <div class="full_height col-3">
+                <nav>
+                    <div class="nav nav-tabs ml-2" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-overall-tab" data-toggle="tab" href="#nav-overall"
+                            role="tab" aria-controls="nav-overall" aria-selected="true">Overall</a>
+                        <a class="nav-item nav-link" id="nav-dh-tab" data-toggle="tab" href="#nav-dh" role="tab"
+                            aria-controls="nav-dh" aria-selected="false">DH</a>
+                        <a class="nav-item nav-link" id="nav-sg-tab" data-toggle="tab" href="#nav-sg" role="tab"
+                            aria-controls="nav-sg" aria-selected="false">SG</a>
+                        <a class="nav-item nav-link" id="nav-gs-tab" data-toggle="tab" href="#nav-gs" role="tab"
+                            aria-controls="nav-gs" aria-selected="false">GS</a>
+                        <a class="nav-item nav-link" id="nav-sl-tab" data-toggle="tab" href="#nav-sl" role="tab"
+                            aria-controls="nav-sl" aria-selected="false">SL</a>
+                        <a class="nav-item nav-link" id="nav-ac-tab" data-toggle="tab" href="#nav-ac" role="tab"
+                            aria-controls="nav-ac" aria-selected="false">AC</a>
+                        <a class="nav-item nav-link" id="nav-par-tab" data-toggle="tab" href="#nav-par" role="tab"
+                            aria-controls="nav-par" aria-selected="false">PAR</a>
+                    </div>
+                </nav>
                 <div class="full_height col-12 border rounded mx-2">
-                    <div id="ranking"></div>
+                    <div class="full_height tab-content" id="interactive-rankings">
+                        <div class="full_height tab-pane fade show active" id="nav-overall" role="tabpanel"
+                            aria-labelledby="nav-overall-tab">
+                            <div class="full_height" id="overall-rank-box">
+                                <div id="overall-rank"></div>
+                            </div>
+                        </div>
+                        <div class="full_height tab-pane fade" id="nav-dh" role="tabpanel" aria-labelledby="nav-dh-tab">
+                            <div class="full_height" id="downhill-rank-box">
+                                <div id="downhill-rank"></div>
+                            </div>
+                        </div>
+                        <div class="full_height tab-pane fade" id="nav-sg" role="tabpanel" aria-labelledby="nav-sg-tab">
+                            <div class="full_height" id="superg-rank-box">
+                                <div id="superg-rank"></div>
+                            </div>
+                        </div>
+                        <div class="full_height tab-pane fade" id="nav-gs" role="tabpanel" aria-labelledby="nav-gs-tab">
+                            <div class="full_height" id="giant-rank-box">
+                                <div id="giant-rank"></div>
+                            </div>
+                        </div>
+                        <div class="full_height tab-pane fade" id="nav-sl" role="tabpanel" aria-labelledby="nav-sl-tab">
+                            <div class="full_height" id="slalom-rank-box">
+                                <div id="slalom-rank"></div>
+                            </div>
+                        </div>
+                        <div class="full_height tab-pane fade" id="nav-ac" role="tabpanel" aria-labelledby="nav-ac-tab">
+                            <div class="full_height" id="combined-rank-box">
+                                <div id="combined-rank"></div>
+                            </div>
+                        </div>
+                        <div class="full_height tab-pane fade" id="nav-par" role="tabpanel"
+                            aria-labelledby="nav-par-tab">
+                            <div class="full_height" id="parallel-rank-box">
+                                <div id="parallel-rank"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="full_height col-6">
@@ -38,47 +104,215 @@
                 </div>
             </div>
             <div class="full_height col-3">
-                <div class="full_height col-12 border rounded mx-2">
-                    <p>RACE INFO</p>
+                <div class="full_height col-12 border rounded mx-2" style="height: 130%;">
+                    <div id="race-title" class="row">
+                        <div id="race" class="col-5">
+                            <h2 id="venue"></h2>
+                            <h5 id="country_name"></h5>
+                            <h5 id="event"></h5>
+                        </div>
+                        <div id="race-country" class="col-2">
+                            <div id="flag"></div>
+                        </div>
+
+                        <div id="race-image" class="col-5"></div>
+                    </div>
+                    <div id="race-table" class="full_height row"></div>
+                </div>
+                <div class="ath_profile border rounded m-2 p-3">
+                    <div class="input-group mb-3">
+                        <input id="ath_search" type="text" class="form-control" placeholder="Athlete name..."
+                            aria-label="Athlete name..." aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" type="button" id="search_button">Search</button>
+                        </div>
+                    </div>
+                    <div class="media ">
+                        <img id="ath_photo" src="./img/placeholder.png"
+                            class="ath_photo align-self-start mr-3 img-thumbnail">
+                        <div class="media-body">
+                            <h5 class="ath_name mt-0">No skier selected</h5>
+                            <div class="ath_details">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-block mt-2" data-toggle="modal"
+                        data-target="#profile-modal" id="see-stats" disabled>
+                        See stats
+                    </button>
                 </div>
             </div>
         </div>
         <div class="second_row row my-2">
-            <div class="full_height col-3">
+            <div class="full_height col-3 pt-5">
                 <div class="full_height col-12 border rounded mx-2">
-                    <p>CONTROL BOX</p>
-                    <div class="col-sm">
+
+                    <div class="col-sm" id="slider-box">
                         <div id="slider-step"></div>
                     </div>
-                    <button type="button" id="start">start</button>
-                    <button type="button" id="stop">stop</button>
+                    <div class="row m-2">
+                        Events selector
+                    </div>
+                    <div id="event-slider-container">
+
+                    </div>
+                    <div class="row m-2">
+                        Simulation controls
+                    </div>
+                    <div class="row m-2">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-dark btn-block" id="start">start</button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-secondary btn-block" id="stop">stop</button>
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        World Cup selector
+                    </div>
+                    <div class="row m-2">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="options" id="women" checked> Women
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="men"> Men
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="full_height col-6">
-                <div class="full_height col-12 border rounded mx-2" id="graph_area">
+                <div class="full_height col-12 border rounded mx-2" id="graph-box">
                     <svg id="graph"></svg>
-                </div>
-            </div>
-            <div class="full_height col-3">
-                <div class="full_height col-12 border rounded mx-2">
-                    <p>PERSONAL INFO PAGE</p>
-                    <div class="media">
-                        <!--<img class="align-self-start mr-3 img-thumbnail" id="athtlete_img" src="./img/placeholder.png"
-                            alt="">-->
-                        <div class="media-body">
-                            <h5 class="mt-0" id="athlete">Unknown</h5>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="img/sketch_personal info.png" style="width:200px">
                 </div>
             </div>
         </div>
         <div class="timeline_row">
-            <div class="col-12 row border rounded mx-2">
-                <p>MAIN TIMELINE</p> 
-                <p><select id="season"></select></p>
+            <div class="col-12 border rounded mx-2">
+                <input id="timeline" type="text" class="js-range-slider" name="my_range" value="" />
             </div>
         </div>
+        <div class="navdown_row my-4">
+            <div id="go" class="full_height col-12 mx-2">
+                <a href="#story">Lost ? Read all the explanations first !</a></div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="profile-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="media ">
+                        <img id="ath-photo-modal" src="./img/placeholder.png"
+                            class="ath_photo align-self-start mr-3 img-thumbnail" style=" max-width: 100px;
+                        max-height: 100px;">
+                        <div class="media-body">
+                            <h5 class="ath_name mt-0">No skier selected</h5>
+                            <div class="ath_details">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="select-profile-chart">
+                                    <label class="btn btn-secondary active">
+                                        <input type="radio" id="career" name="time" value="career" checked="checked">
+                                        Career
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" id="until" name="time" value="until"> Career until <span
+                                            class="season-year"></span>
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" id="season" name="time" value="season">Season (<span
+                                            class="season-year"></span>)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Mean number of points per event</h4>
+                                <div class="stats-graph">
+                                    <svg id="mean_graph" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Points per season, per event</h4>
+                                <div class="stats-graph">
+                                    <svg id="legend_career_graph" style="display: inline;" />
+                                    <svg id="career_graph" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="container full_height">
+        <div id="exlanations" class="rounded m-2 p-3">
+            <h2>Tout Schuss - explore the history of World Cup results</h2>
+
+        <p>Dear alpine skiing fans, have you ever wondered who performed best in the World Cup during their times, and
+            how they compare to today's top athletes? Whether athletes are more or less versatile than before? Or are
+            you just looking for an easy way to review the complete history of the World Cup? Well, wonder no more, as
+            we will accompany you and show you the features we have brought to shed some light on these questions!</p>
+
+        <p>These visualizations allow you to bring your own conclusions about the evolution of the sport and its
+            athletes. A wide variety of chopice awaits you, and here is a short presentation of everything that is
+            available.</p>
+
+        <h3>Parameters</h3>
+
+        <p>Before diving into all the different components, take some time to set your parameters. Choose your year
+            using the slider at the bottom and whether you would like to look at the women's or men's results, and you
+            are then good to go!</p>
+
+        <h3>Dynamic rankings</h3>
+
+        <p>The top-left component allows you the relive the World Cup ranking evolution as they happened at the time!
+            Who was a main contender? Why did this slalom specialist suddenly participate in downhill events? This
+            visualization tells you everything you need and want to know. Skiers have also the color of their favorite
+            type of event, computed for each season. Instead of letting the animation play out for you, you can simply
+            control it using the slider in the control box.</p>
+
+        <h3>Event map & race results</h3>
+
+        <p>The map shows all events of a given season. It evolves according to the progression of the season in the bar
+            chart race. When you click on a given event, you can choose which race results you want to display in the
+            top-right panel.</p>
+
+        <h3>Similarity graph</h3>
+
+        <p>The graph (bottom-middle component) shows how skiers are <i>linked</i> between each other during a given
+            season. You can generally notice a group of technicians and another one of speed specialists. Every skier
+            in-between is versatile and competes in all types of events.</p>
+
+        <h3>Skier profile</h3>
+
+        <p>Finally, the bottom-right component links everything together. It displays the information we have about a
+            specific athlete, and shows graphs about the mean number of points he gathers per event, and all his World
+            Cup points during his whole career. Each component is linked to the profile, so you can always know more
+            about this one skier who almost won the Wolrd Cup. There is also a search bar with autocomplete available!
+        </p>
+        <div id="back">
+            <a href="#dashboard">Back to "Tout Schuss" !</a>
+        </div>
+        </div>
+        <span id="story"></span>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
@@ -94,26 +328,116 @@
         crossorigin=""></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://unpkg.com/d3-simple-slider"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
+
+    <script type="text/javascript" src="data/event_location.js"></script>
+    <script type="text/javascript" src="data/wcf_events.js"></script>
+    <script type="text/javascript" src="data/wcm_events.js"></script>
 
     <script type="text/javascript" src="./js/oam_head.js"></script>
     <script src="./js/map.js"></script>
+    <script src="./js/profile.js"></script>
     <script src="./js/graph.js"></script>
-    <script src="js/ranking.js"></script>
-    <script>
-        $(document).ready(function () {
-            seasons = [1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]
-            //seasons.reverse().forEach(val => { $('#season').append('<option value="' + val + '">' + val + '</option>') });
-            seasons.forEach(val => { $('#season').append('<option value="' + val + '">' + val + '</option>') });
+    <script src="./js/ranking.js"></script>
+    <script src="./js/race.js"></script>
+    <script src="./js/auto-complete.min.js"></script>
+    <script src="./js/legend.js"></script>
 
-            create_graph("#graph", "#athlete", "./data/graph_M_" + $('#season').val() + ".json")
+
+    <script>
+        var currentRanking = ''
+        var isMen = false;
+        var tabToRaceType = {}
+        var raceTypeToDatafileSuffix = {}
+        var selectedAthlete = ''
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            currentRanking = tabToRaceType[e.target.id]
+            refresh_ranking(currentRanking, get_current_year())
+        })
+
+        function refresh_ranking(ranking, year) {
+            $('#' + ranking + '-rank').remove()
+            $('#' + ranking + '-rank-box').html('<div id="' + ranking + '-rank"></div>')
+            $('#slider-step').remove()
+            $('#slider-box').html('<div id="slider-step"></div>')
+            create_ranking('#' + ranking + '-rank', '../data/rankings/' + get_prefix() + raceTypeToDatafileSuffix[currentRanking] + 'ranking_' + year + '.csv', year, get_locations(year))
+        }
+
+        function refresh_graph(year) {
+            $('#graph').remove()
+            $('#graph-box').html('<svg id="graph"></svg>')
+            create_graph("#graph", "#athlete", "./data/similarity/" + get_prefix() + "graph_" + year + ".json")
+        }
+
+        function get_current_year() {
+            return $("#timeline").data("ionRangeSlider").result.from
+        }
+
+        function get_prefix() {
+            return isMen ? 'wcm_' : 'wcf_';
+        }
+
+
+        function get_locations(year) {
+            return isMen ? wcm_events[year] : wcf_events[year];
+        }
+
+        $("#timeline").ionRangeSlider({
+            type: "single",
+            min: 1967,
+            max: 2020,
+            from: 1967,
+            grid: true,
+            prettify_enabled: false,
+            grid_snap: true,
+            onStart: function (data) {
+                tabToRaceType = { 'nav-overall-tab': 'overall', 'nav-dh-tab': 'downhill', 'nav-sg-tab': 'superg', 'nav-gs-tab': 'giant', 'nav-sl-tab': 'slalom', 'nav-ac-tab': 'combined', 'nav-par-tab': 'parallel' }
+                raceTypeToDatafileSuffix = { 'overall': '', 'downhill': 'Downhill_', 'superg': 'Super G_', 'giant': 'Giant Slalom_', 'slalom': 'Slalom_', 'combined': 'Combined_', 'parallel': 'Parallel_' }
+                refresh_graph(data.from)
+                currentRanking = 'overall'
+                refresh_ranking(currentRanking, data.from)
+            },
+            onFinish: function (data) {
+                refresh_graph(data.from)
+                refresh_ranking(currentRanking, data.from)
+                update_season()
+            }
         });
 
-        $('#season').on('change', function () {
-            $('#graph').remove()
-            $('#graph_area').html('<svg id="graph"></svg>')
-            create_graph("#graph", "#athlete", "./data/graph_M_" + this.value + ".json")
+        $('#women').on("click", function (e) {
+            isMen = false
+            refresh_ranking(currentRanking, get_current_year())
+            refresh_graph(get_current_year())
         })
+        $('#men').on("click", function (e) {
+            isMen = true
+            refresh_ranking(currentRanking, get_current_year())
+            refresh_graph(get_current_year())
+        })
+
+        $('#career').on("click", function () {
+            loadAthlete(selectedAthlete, get_current_year())
+        })
+
+        $('#until').on("click", function () {
+            loadAthlete(selectedAthlete, get_current_year())
+        })
+
+        $('#season').on("click", function () {
+            loadAthlete(selectedAthlete, get_current_year())
+        })
+
+        function update_season() {
+            $('.season-year').html(get_current_year())
+        }
+
+        $('#profile-modal').on('show.bs.modal', function (event) {
+            $('#career').click()
+        })
+
+        update_season()
     </script>
 </body>
 
